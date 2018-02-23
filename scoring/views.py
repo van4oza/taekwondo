@@ -75,9 +75,8 @@ def last_match(request):
                 match.save()
                 return redirect('/fight/{}/'.format(match.id))
     elif request.method == 'GET':
-        try:
-            match = Match.objects.last()
-        except:
+        match = Match.objects.last()
+        if not match:
             match = Match.objects.create(date=datetime.now())
             match.save()
         return redirect('/fight/{}/'.format(match.id))
