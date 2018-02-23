@@ -75,7 +75,7 @@ ASGI_APPLICATION = "taekwondo.routing.application"
 CHANNEL_LAYERS = {
     'default': {
         "BACKEND": "asgi_rabbitmq.RabbitmqChannelLayer",
-        "ROUTING": "legal_consult.routing.channel_routing",
+        # "ROUTING": "legal_consult.routing.channel_routing",
         "CONFIG": {
             "url": "amqp://guest:guest@localhost:5672/%2F",
         },
