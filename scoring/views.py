@@ -25,7 +25,7 @@ def group_required(*group_names):
                 return True
         return False
 
-    return user_passes_test(in_groups, login_url='/fight/login/?next=/fight/')
+    return user_passes_test(in_groups, login_url='/login/?next=/')
 
 
 @group_required('Judges')
@@ -48,7 +48,7 @@ def new_scoring(request, match_id, fighter_id):
                   }
              })},
     )
-    return HttpResponseRedirect('/fight/score/{}/'.format(score.id))
+    return HttpResponseRedirect('/score/{}/'.format(score.id))
 
 
 @group_required('Judges')
@@ -65,21 +65,21 @@ def last_match(request):
         try:
             _m = parse('№{m} {x}', request.POST['match_id'])['m'] if parse('№{m} {x}', request.POST['match_id']) else parse('№{m} ', request.POST['match_id'])['m']
             match = Match.objects.get(id=_m)
-            return redirect('/fight/{}/'.format(match.id))
+            return redirect('/{}/'.format(match.id))
         except:
             try:
                 match = Match.objects.last()
-                return redirect('/fight/{}/'.format(match.id))
+                return redirect('/{}/'.format(match.id))
             except:
                 match = Match.objects.create(date=datetime.now())
                 match.save()
-                return redirect('/fight/{}/'.format(match.id))
+                return redirect('/{}/'.format(match.id))
     elif request.method == 'GET':
         match = Match.objects.last()
         if not match:
             match = Match.objects.create(date=datetime.now())
             match.save()
-        return redirect('/fight/{}/'.format(match.id))
+        return redirect('/{}/'.format(match.id))
 
 
 def match(request, match_id=None):
@@ -113,7 +113,7 @@ def match(request, match_id=None):
         else:
             match = Match.objects.create(date=datetime.now())
             match.save()
-            return redirect('/fight/{}/'.format(match.id))
+            return redirect('/{}/'.format(match.id))
     elif request.method == 'POST' and match:
         if 'player' in request.POST:
             try:
@@ -134,7 +134,7 @@ def match(request, match_id=None):
                                   'result': match.result(fighter)
                                   }
                              })})
-                    return HttpResponseRedirect('/fight/score/{}/'.format(score.id))
+                    return HttpResponseRedirect('/score/{}/'.format(score.id))
                 else:
                     uss = set()
                     _matches = []
@@ -180,7 +180,7 @@ def match(request, match_id=None):
                     f_n = str(fighter)
                     fighter.delete()
                     try:
-                        url = '/fight/new_score/' + str(match.id) + '/' + str(match.active.id) + '/'
+                        url = '/new_score/' + str(match.id) + '/' + str(match.active.id) + '/'
                         imp = '<tr style="text-align: center; vertical-align: middle;" class="active"><td style="text-align: center; vertical-align: middle;"><a href="' + url + '" style="text-decoration: none"><strong>0</strong></a></td><td style="text-align: center; vertical-align: middle;"><a href="' + url + '" style="text-decoration: none">' + str(
                             match.active) + '</a></td><td style="text-align: center; vertical-align: middle;"><a href="' + url + '" style="text-decoration: none"><strong>' + match.active.country + '</strong></a></td><td style="text-align: center; vertical-align: middle;"><a href="' + url + '" style="text-decoration: none"><strong id="'+str(match.active.id)+'">'+str(match.result(match.active)['supersum'])+'</strong></a></td></tr>'
                         uss = set()
@@ -368,7 +368,7 @@ def match(request, match_id=None):
                         match.active = fighter
                         match.save()
                         if match.active:
-                            url = '/fight/new_score/' + str(match.id) + '/' + str(match.active.id) + '/'
+                            url = '/new_score/' + str(match.id) + '/' + str(match.active.id) + '/'
                             imp = '<tr style="text-align: center; vertical-align: middle;" class="active"><td style="text-align: center; vertical-align: middle;"><a href="'+url+'" style="text-decoration: none"><strong>0</strong></a></td><td style="text-align: center; vertical-align: middle;"><a href="'+url+'" style="text-decoration: none">' + str(match.active) + '</a></td><td style="text-align: center; vertical-align: middle;"><a href="'+url+'" style="text-decoration: none"><strong>'+match.active.country+'</strong></a></td><td style="text-align: center; vertical-align: middle;"><a href="'+url+'" style="text-decoration: none"><strong id="'+str(match.active.id)+'">'+str(match.result(match.active)['supersum'])+'</strong></a></td></tr>'
                         else:
                             imp = ''
@@ -462,7 +462,7 @@ def match(request, match_id=None):
         elif 'new_match' in request.POST:
             match = Match.objects.create(date=request.POST['match_date'], name=request.POST['new_match'])
             match.save()
-            return redirect('/fight/{}/'.format(match.id))
+            return redirect('/{}/'.format(match.id))
         else:
             try:
                 fighter = Fighter.objects.create(name=request.POST['name'], tech=request.POST['tech'],

@@ -5,8 +5,8 @@ from scoring.views import FightConsumer, FightConsumer2
 application = ProtocolTypeRouter({
     'websocket':
         URLRouter([
-            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer),
-            url('^/fight/(?P<match_id>\d+)/$', FightConsumer2),
+            url('^/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer),
+            url('^/(?P<match_id>\d+)/$', FightConsumer2),
         ])
 })
 

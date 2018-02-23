@@ -52,7 +52,7 @@ class Match(models.Model):
         return res
 
     def url(self, fighter):
-        return 'https://legal-consult.online/fight/{}/{}/results/'.format(self.id, fighter.id)
+        return '/{}/{}/results/'.format(self.id, fighter.id)
 
     def __str__(self):
         return '№{} {} {}.{}.{}'.format(self.id, self.name, self.date.day, self.date.month, str(self.date.year)[-2:])
