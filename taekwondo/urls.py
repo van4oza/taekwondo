@@ -23,19 +23,19 @@ from scoring.views import match, new_fighter, last_match, top, results, scoring,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^fight/new/$', match),
-    url(r'^fight/reg/$', new_fighter),
-    url(r'^fight/$', last_match),
-    url(r'^fight/(?P<match_id>\d+)/$', match),
-    url(r'^fight/(?P<match_id>\d+)/top/$', top),
-    url(r'^fight/(?P<match_id>\d+)/(?P<player_id>\d+)/results/$', results),
-    # url(r'^fight/(?P<match_id>\d+)/new$', new_score),
-    url(r'^fight/score/(?P<score_id>\d+)/$', scoring),
-    url(r'^fight/new_score/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', new_scoring),
-    url(r'^fight/score/(?P<score_id>\d+)/(?P<param>[a-zA-Z0-9_.]+)$', command),
+    url(r'^new/$', match),
+    url(r'^reg/$', new_fighter),
+    url(r'^$', last_match),
+    url(r'^(?P<match_id>\d+)/$', match),
+    url(r'^(?P<match_id>\d+)/top/$', top),
+    url(r'^(?P<match_id>\d+)/(?P<player_id>\d+)/results/$', results),
+    # url(r'^(?P<match_id>\d+)/new$', new_score),
+    url(r'^score/(?P<score_id>\d+)/$', scoring),
+    url(r'^new_score/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', new_scoring),
+    url(r'^score/(?P<score_id>\d+)/(?P<param>[a-zA-Z0-9_.]+)$', command),
 
-    url('fight/login/', auth_views.LoginView.as_view(template_name='login.html')),
-    url('fight/logout/', auth_views.LogoutView.as_view(template_name='logout.html')),
+    url('login/', auth_views.LoginView.as_view(template_name='login.html')),
+    url('logout/', auth_views.LogoutView.as_view(template_name='logout.html')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
