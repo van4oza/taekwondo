@@ -1,25 +1,19 @@
-# taekwondo
-taekwondo scoring web-app
+# Taekwondo  scoring web-app
 
 
 
-Prequirements:
+## Prequirements:
 
-python3.6
+- python3.6
+- redis
 
-redis
+## Installation:
 
-
-
-Installation:
-
-
+```
 pip install -r requirements.txt
-
 python manage.py makemigrations
-
 python manage.py migrate
-
+python manage.py collectstatic
 python manage.py createsuperuser
-
 python manage.py runserver
+```
