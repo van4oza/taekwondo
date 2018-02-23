@@ -10,7 +10,7 @@
 		<meta http-equiv="content-launguage" content="ru"/>
 		<meta name="author" content="Махмутова Людмила"/>
 
-        <link href="{% static 'css/fight/ocenka.css' %}" rel="stylesheet" media="all">
+        <link href="{% static 'css/ocenka.css' %}" rel="stylesheet" media="all">
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>			
 	</head>
@@ -18,7 +18,7 @@
 	<div class="block-1">
 		<div id="hits_03">{{ score.hit3 }} x</div>
 		<div id="cancel_0.3" class="set all">Cancel -0,3</div>
-        <div style="padding: 0; vertical-align: middle; height: 100px;"><a href="/fight/{{ match.id }}/" style="padding: 0; margin: 0 auto; width: 100%; vertical-align: middle; line-height: 50px;">ГОТОВО</a><br/><div style="width: 100%; padding: 0; vertical-align: middle; height: 50px;" id="reset" class="set reset"><p style="line-height: 50px;padding: 0; margin: 0 auto; ">RESET</p></div></div>
+        <div style="padding: 0; vertical-align: middle; height: 100px;"><a href="/{{ match.id }}/" style="padding: 0; margin: 0 auto; width: 100%; vertical-align: middle; line-height: 50px;">ГОТОВО</a><br/><div style="width: 100%; padding: 0; vertical-align: middle; height: 50px;" id="reset" class="set reset"><p style="line-height: 50px;padding: 0; margin: 0 auto; ">RESET</p></div></div>
         <div id="cancel_0.1" class="set all">Cancel -0,1</div>
 		<div id="hits_01">x {{ score.hit1 }}</div>
 	</div>	
@@ -166,7 +166,7 @@
     });
 
     $(document).ready(function () {
-        var webSocket = new WebSocket('wss://' + window.location.host + '/fight/{{ match.id }}/{{ fighter.id }}/');
+        var webSocket = new WebSocket('wss://' + window.location.host + '/{{ match.id }}/{{ fighter.id }}/');
 
         webSocket.onmessage = function (message) {
             var data = JSON.parse(message.data);

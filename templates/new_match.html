@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ match }}</title>
-    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
-    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style-dop.css' %}" rel="stylesheet" media="all"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
@@ -15,9 +15,9 @@
 {% endfor %}
 <br/>
 <strong>
-    <a href="/fight/{{ match.id }}/"><h1 style="font-size: 40px">МАТЧ №{{ match.id }}</h1></a><br/>
+    <a href="/{{ match.id }}/"><h1 style="font-size: 40px">МАТЧ №{{ match.id }}</h1></a><br/>
 </strong>
-<form action="/fight/" method="post">
+<form action="/" method="post">
     {% csrf_token %}
     <label for="match_id">Сменить матч:</label>
     <select id="match_id" name="match_id" required>
@@ -31,7 +31,7 @@
 {% if super %}
     <div style="display: inline-block; width: 32%; vertical-align: middle;">
         <strong><h2 style="font-size: 15px; text-align: center; margin: 0;">УДАЛИТЬ УЧАСТНИКА</h2></strong>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="del_player">Участник:</label>
             <select id="del_player" name="del_player" required>
@@ -43,7 +43,7 @@
         </form>
         <br/>
         <strong><h2 style="font-size: 15px; text-align: center; margin: 0;">ДОБАВИТЬ УЧАСТНИКА</h2></strong>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="name">ФИО:</label>
             <input autocomplete="name" id="name" name="name" maxlength="500" placeholder="Вася Пупкин" required><br>
@@ -63,7 +63,7 @@
     </div>
     <div style="display: inline-block; width: 32%; vertical-align: middle;">
         <h2 style="font-size: 15px; text-align: center; margin: 0;">УДАЛИТЬ МАТЧ</h2>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="del_match">Удалить матч:</label>
             <select id="del_match" name="del_match" required>
@@ -75,7 +75,7 @@
         </form>
         <br/>
         <h2 style="font-size: 15px; text-align: center; margin: 0;">НАЧАТЬ НОВЫЙ МАТЧ</h2>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="new_match">Название:</label>
             <input id="new_match" name="new_match" maxlength="500" placeholder="Тхеквандо" required><br>
@@ -85,7 +85,7 @@
         </form>
         <br/>
         <strong><h2 style="font-size: 35px; text-align: center; margin: 0;">АКТИВНЫЙ УЧАСТНИК</h2></strong>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="active">Участник:</label>
             <select id="active" name="active" required>
@@ -99,7 +99,7 @@
     </div>
     <div style="display: inline-block; width: 32%; vertical-align: middle;">
         <strong><h2 style="font-size: 15px; text-align: center; margin: 0;">УДАЛИТЬ СУДЬЮ</h2></strong>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="del_judge">Судья:</label>
             <select id="del_judge" name="del_judge" required>
@@ -111,7 +111,7 @@
         </form>
         <br>
         <strong><h2 style="font-size: 15px; text-align: center; margin: 0;">ДОБАВИТЬ СУДЬЮ</h2></strong>
-        <form action="/fight/{{ match.id }}/" method="post">
+        <form action="/{{ match.id }}/" method="post">
             {% csrf_token %}
             <label for="add_judge">Username:</label>
             <input id="add_judge" name="add_judge" maxlength="500" placeholder="Judge" required><br>
@@ -123,30 +123,30 @@
 {% endif %}
 <br/>
 <br/>
-{#<a href="/fight/{{ match.id }}/top"><h2 style="font-size: 15px; text-align: center; margin: 0;">ТАБЛИЦА РЕЗУЛЬТАТОВ</h2></a>#}
+{#<a href="/{{ match.id }}/top"><h2 style="font-size: 15px; text-align: center; margin: 0;">ТАБЛИЦА РЕЗУЛЬТАТОВ</h2></a>#}
 <table style="text-align: center; vertical-align: middle;" id="active_tabel">
     {% if match.active %}
         <tr style="text-align: center; vertical-align: middle;" class="active">
             <td style="text-align: center; vertical-align: middle;">
-                <a href="/fight/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
+                <a href="/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
                    style="text-decoration: none">
                     <strong>0</strong>
                 </a>
             </td>
             <td style="text-align: center; vertical-align: middle;">
-                <a href="/fight/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
+                <a href="/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
                    style="text-decoration: none">
                     {{ match.active }}
                 </a>
             </td>
             <td style="text-align: center; vertical-align: middle;">
-                <a href="/fight/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
+                <a href="/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
                    style="text-decoration: none">
                     <strong>{{ match.active.country }}</strong>
                 </a>
             </td>
             <td style="text-align: center; vertical-align: middle;">
-                <a href="/fight/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
+                <a href="/{% if not super and user.is_authenticated %}new_score/{% endif %}{{ match.id }}/{{ match.active.id }}/{% if super or not user.is_authenticated %}results/{% endif %}"
                    style="text-decoration: none">
                     <strong id="{{ match.active.id }}">{{ match.active_res }}</strong>
                 </a>
@@ -173,15 +173,15 @@
 <br/>
 {% if user.is_authenticated %}
     <h3 style="text-align: center; margin: 0;">Вы {{ user.username }}</h3>
-    <a href="/fight/logout/"><h2 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">ВЫХОД</h2></a>
+    <a href="/logout/"><h2 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">ВЫХОД</h2></a>
 {% else %}
-    <a href="/fight/login/"><h2 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">ВХОД ДЛЯ СУДЕЙ</h2>
+    <a href="/login/"><h2 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">ВХОД ДЛЯ СУДЕЙ</h2>
     </a>
 {% endif %}
 </body>
 <script>
     $(document).ready(function () {
-        var webSocket = new WebSocket('wss://' + window.location.host + '/fight/{{ match.id }}/');
+        var webSocket = new WebSocket('wss://' + window.location.host + '/{{ match.id }}/');
 
         webSocket.onmessage = function (message) {
             var data = JSON.parse(message.data);
@@ -191,7 +191,7 @@
                     var text = data.message;
                 {% else %}
                     if (data.active_id) {
-                        var text = data.message.replace(/\/fight\/new_score\/\d+\/\d+\//g, '/fight/{{ match.id }}/' + data.active_id + '/results/');
+                        var text = data.message.replace(/\/fight\/new_score\/\d+\/\d+\//g, '/{{ match.id }}/' + data.active_id + '/results/');
                     } else {
                         var text = data.message;
                     }

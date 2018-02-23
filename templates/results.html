@@ -9,8 +9,8 @@
     <meta name="keywords" content=""/>
     <meta http-equiv="content-launguage" content="ru"/>
     <meta name="author" content="Махмутова Людмила"/>
-    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
-    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style-dop.css' %}" rel="stylesheet" media="all"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
@@ -24,7 +24,7 @@
     <div class="strana-fl">
         <div class="flag"
                 {% if fighter.country == 'RUS' %}
-             style="background-image: url({% static "img/fight/rus.png" %});"
+             style="background-image: url({% static "img/rus.png" %});"
                 {% endif %}>
         </div>
         <h2>{{ fighter.country }}</h2>
@@ -64,12 +64,12 @@
 <br/>
 <br/>
 <br/>
-<a href="/fight/{{ match.id }}/"><h1 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">НАЗАД</h1></a>
+<a href="/{{ match.id }}/"><h1 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">НАЗАД</h1></a>
 </body>
 <script>
     $(document).ready(function () {
 
-        var webSocket = new WebSocket('wss://' + window.location.host + '/fight/{{ match.id }}/{{ fighter.id }}/');
+        var webSocket = new WebSocket('wss://' + window.location.host + '/{{ match.id }}/{{ fighter.id }}/');
 
         webSocket.onmessage = function (message) {
             var data = JSON.parse(message.data);

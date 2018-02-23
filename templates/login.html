@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Логин</title>
-    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
-    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style-dop.css' %}" rel="stylesheet" media="all"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
@@ -32,7 +32,7 @@
         <br/>
     {% endif %}
 {% endif %}
-    <form method="post" action="/fight/login/">
+    <form method="post" action="/login/">
 {% csrf_token %}
         {{ form.username.label_tag }}
         {{ form.username }}
@@ -45,7 +45,7 @@
         <br/>
         <br/>
 <input type="submit" value="login" />
-<input type="hidden" name="next" value="/fight/" />
+<input type="hidden" name="next" value="/" />
 </form></span>
 {#</div>#}
 {#<div style="display: inline-block; width: 32%; vertical-align: middle;"></div>#}

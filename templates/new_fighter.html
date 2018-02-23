@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация участников</title>
-    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
-    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/style-dop.css' %}" rel="stylesheet" media="all"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body style="display: table; width: 100%; height: 100vh; text-align: center">
 {#<div style="display: inline-block; width: 32%; vertical-align: middle;"></div>#}
 {#<div style="display: inline-block; vertical-align: middle;">#}
-    <form action="/fight/reg/" method="post" style="display: table-cell; vertical-align: middle; margin: 0 auto; text-align: center">
+    <form action="/reg/" method="post" style="display: table-cell; vertical-align: middle; margin: 0 auto; text-align: center">
         {% csrf_token %}
 <h2 style="font-size: 25px; margin: 0 auto; text-align: center">РЕГИСТРАЦИЯ НА СОРЕВНОВАНИЯ</h2>
     <br/>
