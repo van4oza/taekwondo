@@ -25,3 +25,5 @@ As superuser, **create group** `Judges` in admin panel:
 **Create users** and **specify** that they're in `Judges` group:
 
 `/admin/auth/user/add/`
+
+### Don't forget to change and hide [SECRET KEY](https://github.com/van4oza/taekwondo/blob/33fc64a2354980045655222574c6cd9cf7ae39f8/taekwondo/settings.py#L23)
