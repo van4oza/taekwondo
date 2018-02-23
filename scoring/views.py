@@ -5,11 +5,15 @@ from django.shortcuts import render, redirect
 from parse import parse
 from .pretty_print import pretty_search_or_print
 from .models import Score, Match, Fighter
-from channels.channel import Group as chan_group
+# from channels.generic import Group as chan_group
+from channels.layers import get_channel_layer
 import json
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.contrib.auth.decorators import user_passes_test
+from channels.generic.websocket import WebsocketConsumer
+
+channel_layer = get_channel_layer()
 
 
 def group_required(*group_names):
@@ -34,14 +38,16 @@ def new_scoring(request, match_id, fighter_id):
     r = []
     for s in scores:
         r.append({'id': str(s.id), 'all': str(s.all), 'sum': str(s.sum)})
-    chan_group('{}_{}'.format(score.match.id, score.fighter.id)).send(
+    channel_layer.group_send(
+        '{}_{}'.format(score.match.id, score.fighter.id),
         {'text': json.dumps(
             {'mission': 'scores_update',
              'message':
                  {'results': r,
                   'result': match.result(player),
                   }
-             })})
+             })},
+    )
     return HttpResponseRedirect('/fight/score/{}/'.format(score.id))
 
 
@@ -122,8 +128,7 @@ def match(request, match_id=None):
                     r = []
                     for s in scores:
                         r.append({'id': str(s.id), 'all': str(s.all), 'sum': str(s.sum)})
-                    chan_group('{}_{}'.format(score.match.id, score.fighter.id)).send(
-                        {'text': json.dumps(
+                    channel_layer.group_send('{}_{}'.format(score.match.id, score.fighter.id), {'text': json.dumps(
                             {'mission': 'scores_update',
                              'message':
                                  {'results': r,
@@ -199,7 +204,7 @@ def match(request, match_id=None):
                                     m['url']) + '" style="text-decoration: none">' + str(m['country']) + '</a></td><td style="text-align: center; vertical-align: middle;"><a href="' + str(
                                     m['url']) + '" style="text-decoration: none"id="' + str(
                                     m['player_id']) + '">' + str(m['score']) + '</a></td></tr>'
-                        chan_group('{}_boss'.format(match.id)).send({'text': json.dumps(
+                        channel_layer.group_send('{}_boss'.format(match.id), {'text': json.dumps(
                             {'mission': 'active_tabel', 'message': imp, 'active_id': match.active.id})})
                     except:
                         imp = ''
@@ -222,8 +227,7 @@ def match(request, match_id=None):
                                 m['url']) + '" style="text-decoration: none">' + str(m['country']) + '</a></td><td style="text-align: center; vertical-align: middle;"><a href="' + str(
                                 m['url']) + '" style="text-decoration: none"id="' + str(m['player_id']) + '">' + str(
                                 m['score']) + '</a></td></tr>'
-                        chan_group('{}_boss'.format(match.id)).send(
-                            {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': None})})
+                        channel_layer.group_send('{}_boss'.format(match.id), {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': None})})
                     return render(request, 'new_match.html',
                                   {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                    'errors': ['Участник {} успешно удалён!'.format(f_n)], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
@@ -355,8 +359,7 @@ def match(request, match_id=None):
                         m['url']) + '" style="text-decoration: none">' + str(m['country']) + '</a></td><td style="text-align: center; vertical-align: middle;"><a href="' + str(
                         m['url']) + '" style="text-decoration: none"id="' + str(m['player_id']) + '">' + str(
                         m['score']) + '</a></td></tr>'
-                chan_group('{}_boss'.format(match.id)).send(
-                    {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': None})})
+                channel_layer.group_send('{}_boss'.format(match.id), {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': None})})
             else:
                 try:
                     _fighter = parse('#{f} {x}', request.POST['active'])['f'] if parse('#{f} {x}',
@@ -385,7 +388,7 @@ def match(request, match_id=None):
                         for m in matches:
                             if not match.active or match.active.name != m['player']:
                                 imp += '<tr style="text-align: center; vertical-align: middle;"><td style="text-align: center; vertical-align: middle;"><a href="'+str(m['url'])+'" style="text-decoration: none">'+str(m['i'])+'</a></td><td style="text-align: center; vertical-align: middle;"><a href="'+str(m['url'])+'" style="text-decoration: none">'+str(m['player'])+'</a></td><td style="text-align: center; vertical-align: middle;"><a href="'+str(m['url'])+'" style="text-decoration: none">'+str(m['country'])+'</a></td><td style="text-align: center; vertical-align: middle;"><a href="'+str(m['url'])+'" style="text-decoration: none"id="'+str(m['player_id'])+'">'+str(m['score'])+'</a></td></tr>'
-                        chan_group('{}_boss'.format(match.id)).send({'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': match.active.id})})
+                        channel_layer.group_send('{}_boss'.format(match.id), {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': match.active.id})})
                 except Exception as e:
                     er = [pretty_search_or_print(e)]
             uss = set()
@@ -590,8 +593,7 @@ def command(request, score_id, param):
         r = []
         for s in scores:
             r.append({'id': str(s.id), 'all': str(s.all), 'sum': str(s.sum)})
-        chan_group('{}_{}'.format(score.match.id, score.fighter.id)).send(
-            {'text': json.dumps(
+        channel_layer.group_send('{}_{}'.format(score.match.id, score.fighter.id), {'text': json.dumps(
                 {'mission': 'scores_update',
                  'message':
                      {'results': r,
@@ -599,7 +601,7 @@ def command(request, score_id, param):
                       }
                  })})
         # match.result(m.fighter)['supersum']
-        chan_group('{}_boss'.format(match.id)).send({'text': json.dumps({
+        channel_layer.group_send('{}_boss'.format(match.id), {'text': json.dumps({
             'mission': 'f_score',
             'f': score.fighter.id,
             's': match.result(player)['supersum']
@@ -611,34 +613,31 @@ def command(request, score_id, param):
         return JsonResponse({'ok': False, 'error': pretty_search_or_print(e)})
 
 
-def ws_connect(message, match_id, fighter_id):
-    message.reply_channel.send({"accept": True})
-    chan_group('{}_{}'.format(match_id, fighter_id)).add(message.reply_channel)
-    message.reply_channel.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
+class FightConsumer(WebsocketConsumer):
 
+    def ws_connect(self, message, match_id, fighter_id):
+        self.send({"accept": True})
+        channel_layer.group_add('{}_{}'.format(match_id, fighter_id), self)
+        self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-def ws_message(message, match_id, fighter_id):
-    text = json.loads(message.content['text'])
-    message.reply_channel.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
+    def ws_message(self, message, match_id, fighter_id):
+        text = json.loads(message.content['text'])
+        self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
+    def ws_disconnect(self, message, match_id, fighter_id):
+        channel_layer.group_add('{}_{}'.format(match_id, fighter_id), self)
 
-def ws_disconnect(message, match_id, fighter_id):
-    chan_group('{}_{}'.format(match_id, fighter_id)).discard(message.reply_channel)
+    def ws_connect_boss(self, message, match_id):
+        self.send({"accept": True})
+        channel_layer.group_add('{}_boss'.format(match_id), self)
+        self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
+    def ws_message_boss(self, message, match_id):
+        text = json.loads(message.content['text'])
+        self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-def ws_connect_boss(message, match_id):
-    message.reply_channel.send({"accept": True})
-    chan_group('{}_boss'.format(match_id)).add(message.reply_channel)
-    message.reply_channel.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
-
-
-def ws_message_boss(message, match_id):
-    text = json.loads(message.content['text'])
-    message.reply_channel.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
-
-
-def ws_disconnect_boss(message, match_id):
-    chan_group('{}_boss'.format(match_id)).discard(message.reply_channel)
+    def ws_disconnect_boss(self, message, match_id):
+        channel_layer.group_discard('{}_boss'.format(match_id), self)
 
 
 def new_fighter(request):

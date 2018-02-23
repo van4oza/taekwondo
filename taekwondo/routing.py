@@ -1,13 +1,26 @@
-from channels.routing import route
+from django.conf.urls import url
+from channels.routing import ProtocolTypeRouter, URLRouter
+from scoring.views import FightConsumer
 
-channel_routing = [
-    route('websocket.connect', 'catalog.fight.ws_connect', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
-    route('websocket.receive', 'catalog.fight.ws_message', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
-    route('websocket.disconnect', 'catalog.fight.ws_disconnect', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
-    route('websocket.connect', 'catalog.fight.ws_connect_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
-    route('websocket.receive', 'catalog.fight.ws_message_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
-    route('websocket.disconnect', 'catalog.fight.ws_disconnect_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
-]
+application = ProtocolTypeRouter({
+    URLRouter([
+            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_connect),
+            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_message),
+            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_disconnect),
+            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_connect_boss),
+            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_message_boss),
+            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_disconnect_boss)
+        ])
+})
+
+# channel_routing = [
+#     route('websocket.connect', 'catalog.fight.ws_connect', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
+#     route('websocket.receive', 'catalog.fight.ws_message', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
+#     route('websocket.disconnect', 'catalog.fight.ws_disconnect', path=r"^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$"),
+#     route('websocket.connect', 'catalog.fight.ws_connect_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
+#     route('websocket.receive', 'catalog.fight.ws_message_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
+#     route('websocket.disconnect', 'catalog.fight.ws_disconnect_boss', path=r"^/fight/(?P<match_id>\d+)/$"),
+# ]
 
 #     {
 #     'websocket.connect': 'channeled.consumers.ws_connect',

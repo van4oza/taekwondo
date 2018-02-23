@@ -70,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'taekwondo.wsgi.application'
+ASGI_APPLICATION = "taekwondo.routing.application"
 
 CHANNEL_LAYERS = {
     'default': {
