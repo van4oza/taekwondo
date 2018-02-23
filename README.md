@@ -1,6 +1,8 @@
 # taekwondo
 taekwondo scoring web-app
 
+Prequirements: redis
+
 Installation
 
 
