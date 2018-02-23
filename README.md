@@ -1,7 +1,12 @@
 # taekwondo
 taekwondo scoring web-app
 
-Prequirements: redis
+Prequirements:
+
+python3.6
+
+redis
+
 
 Installation
 
