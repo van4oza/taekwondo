@@ -1,15 +1,11 @@
 from django.conf.urls import url
 from channels.routing import ProtocolTypeRouter, URLRouter
-from scoring.views import FightConsumer
+from scoring.views import FightConsumer, FightConsumer2
 
 application = ProtocolTypeRouter({
     URLRouter([
-            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_connect),
-            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_message),
-            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer.ws_disconnect),
-            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_connect_boss),
-            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_message_boss),
-            url('^/fight/(?P<match_id>\d+)/$', FightConsumer.ws_disconnect_boss)
+            url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer),
+            url('^/fight/(?P<match_id>\d+)/$', FightConsumer2),
         ])
 })
 

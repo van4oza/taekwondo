@@ -615,28 +615,36 @@ def command(request, score_id, param):
 
 class FightConsumer(WebsocketConsumer):
 
-    def ws_connect(self, message, match_id, fighter_id):
+    def connect(self):
+        match_id = self.scope['url_route']['kwargs']['match_id']
+        fighter_id = self.scope['url_route']['kwargs']['fighter_id']
         self.send({"accept": True})
         channel_layer.group_add('{}_{}'.format(match_id, fighter_id), self)
         self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-    def ws_message(self, message, match_id, fighter_id):
+    def message(self, message):
         text = json.loads(message.content['text'])
         self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-    def ws_disconnect(self, message, match_id, fighter_id):
-        channel_layer.group_add('{}_{}'.format(match_id, fighter_id), self)
+    def disconnect(self, message):
+        match_id = self.scope['url_route']['kwargs']['match_id']
+        fighter_id = self.scope['url_route']['kwargs']['fighter_id']
+        channel_layer.group_discard('{}_{}'.format(match_id, fighter_id), self)
 
-    def ws_connect_boss(self, message, match_id):
-        self.send({"accept": True})
+
+class FightConsumer2(WebsocketConsumer):
+
+    def connect(self):
+        self.accept()
+        match_id = self.scope['url_route']['kwargs']['match_id']
         channel_layer.group_add('{}_boss'.format(match_id), self)
-        self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-    def ws_message_boss(self, message, match_id):
+    def message(self, message):
         text = json.loads(message.content['text'])
         self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
-    def ws_disconnect_boss(self, message, match_id):
+    def disconnect(self, message):
+§        match_id = self.scope['url_route']['kwargs']['match_id']
         channel_layer.group_discard('{}_boss'.format(match_id), self)
 
 
