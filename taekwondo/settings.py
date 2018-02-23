@@ -73,11 +73,10 @@ WSGI_APPLICATION = 'taekwondo.wsgi.application'
 ASGI_APPLICATION = "taekwondo.routing.application"
 
 CHANNEL_LAYERS = {
-    'default': {
-        "BACKEND": "asgi_rabbitmq.RabbitmqChannelLayer",
-        # "ROUTING": "legal_consult.routing.channel_routing",
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "url": "amqp://guest:guest@localhost:5672/%2F",
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
