@@ -5,7 +5,7 @@ Django channels web-app
 ## Prequirements:
 
 - python3.6
-- redis
+- redis ([config url](https://github.com/van4oza/taekwondo/blob/e6de2490c741d6549d76272d6e083aeeff56a8da/taekwondo/settings.py#L79))
 
 ## Installation:
 
