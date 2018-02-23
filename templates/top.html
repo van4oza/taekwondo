@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Матч №{{ match.id }} TOP</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta http-equiv="content-launguage" content="ru"/>
+    <meta name="author" content="Махмутова Людмила"/>
+    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<table>
+    {% for m in matches %}
+        <tr> {# class="active" #}
+            <td style="text-align: center"><a href="{{ m.url }}" style="text-decoration: none">{{ m.i }}</a></td>
+            <td><a href="{{ m.url }}" style="text-decoration: none">{{ m.player }}</a></td>
+            <td style="text-align: center"><a href="{{ m.url }}" style="text-decoration: none">{{ m.country }}</a></td>
+            <td style="text-align: center"><a href="{{ m.url }}" style="text-decoration: none" id="{{ m.player_id }}">{{ m.score }}</a></td>
+        </tr>
+    {% endfor %}
+{#        <tr class="active">#}
+{#            <td style="text-align: center"><a href="/fight/{{ match.id }}/" style="text-decoration: none"><strong>+</strong></a></td>#}
+{#            <td><a href="/fight/{{ match.id }}/" style="text-decoration: none">Новый бой</a></td>#}
+{#            <td style="text-align: center"><a href="/fight/{{ match.id }}/" style="text-decoration: none"><strong>?</strong></a></td>#}
+{#            <td style="text-align: center"><a href="/fight/{{ match.id }}/" style="text-decoration: none"><strong>-</strong></a></td>#}
+{#        </tr>#}
+</table>
+</body>
+<script>
+    $(document).ready(function () {
+        var webSocket = new WebSocket('wss://' + window.location.host + '/fight/{{ match.id }}/');
+
+        webSocket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log(data);
+        };
+    });
+</script>
+</html>

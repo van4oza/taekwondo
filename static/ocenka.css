@@ -1,0 +1,168 @@
+body {
+    width: 100%;
+    height: 595px;
+    background-color: #000;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    list-style: none;
+    display: block;
+    float: left;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.clear {
+    clear: both;
+}
+
+.block-1 div {
+    border-radius: 7px;
+    background-color: #666666;
+    border: 2px solid #989898;
+    width: 23%;
+    padding-top: 25px;
+    box-sizing: border-box;
+    height: 100px;
+    font-size: 30px;
+    cursor: pointer;
+    float: left;
+}
+
+.block-1 div:first-child {
+    background-color: #333301;
+    color: #fe0000;
+    width: 10%;
+}
+
+.block-1 div:nth-child(2) {
+    width: 23%;
+    color: #fe0000;
+}
+
+.block-1 div:nth-child(3) {
+    width: 34%;
+}
+
+.block-1 div:nth-child(4) {
+    width: 23%;
+    color: #13f114;
+}
+
+.block-1 div:last-child {
+    width: 10%;
+    color: #13f114;
+    background-color: #333301;
+}
+
+/****************************/
+.block-2 div {
+    width: 33%;
+    height: 250px;
+    color: #fef90a;
+    font-size: 60px;
+    background-color: #fe0000;
+    border-radius: 7px;
+    border: 2px solid #989898;
+    padding-top: 75px;
+    box-sizing: border-box;
+    float: left;
+}
+
+.block-2 div:nth-child(2) {
+    background-color: #000;
+    color: #13f114;
+    font-size: 100px;
+    padding-top: 50px;
+    width: 34%;
+    border: none;
+}
+
+.block-2 div:last-child {
+    background-color: #13f114;
+}
+
+/******************************************/
+h2 {
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.ocenka ul li {
+    width: 10%;
+    height: 80px;
+    padding-top: 15px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    font-size: 30px;
+    border: 5px solid #005500;
+}
+
+.ocenka ul li:first-child {
+    font-size: 35px;
+    color: #009afb;
+}
+
+.ocenka ul li.active {
+    border: 5px solid #989898;
+    background-color: #007674;
+}
+
+.ocenka ul li:nth-child(3),
+.ocenka ul li:nth-child(4),
+.ocenka ul li:nth-child(5) {
+    border: 5px solid #520704;
+}
+
+.ocenka ul li:nth-child(6),
+.ocenka ul li:nth-child(7),
+.ocenka ul li:nth-child(8) {
+    border: 5px solid #525b00;
+}
+
+/***************************************/
+.block-3 ul li {
+    width: 33%;
+    color: #00ff01;
+    font-size: 30px;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.block-3 ul li:nth-child(2) {
+    color: #009afe;
+}
+
+.block-3 ul li:last-child {
+    color: #feff01;
+}
+
+.block-4 ul li {
+    font-size: 100px;
+}
+
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

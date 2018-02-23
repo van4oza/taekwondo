@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'taekwondo',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'taekwondo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +71,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'taekwondo.wsgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "asgi_rabbitmq.RabbitmqChannelLayer",
+        "ROUTING": "legal_consult.routing.channel_routing",
+        "CONFIG": {
+            "url": "amqp://guest:guest@localhost:5672/%2F",
+        },
+    },
+}
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+DEFAULT_CONNECTION_ATTEMPTS = 100
+DEFAULT_HEARTBEAT_TIMEOUT = None
+DEFAULT_RETRY_DELAY = 5
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -118,3 +148,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+if DEBUG:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+        # '/var/www/static/', альтернативные пути для поиска статики пишем тут
+    )
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

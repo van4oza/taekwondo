@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Матч №{{ match.id }} {{ fighter }}</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta http-equiv="content-launguage" content="ru"/>
+    <meta name="author" content="Махмутова Людмила"/>
+    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="block">
+    <p>{{ fighter.id }}</p>
+    <h2>{{ fighter.gender }}</h2>
+</div>
+<div class="clear"></div>
+<div class="strana">
+    <div class="strana-fl">
+        <div class="flag"
+                {% if fighter.country == 'RUS' %}
+             style="background-image: url({% static "img/fight/rus.png" %});"
+                {% endif %}>
+        </div>
+        <h2>{{ fighter.country }}</h2>
+    </div>
+    <div class="name"><h2>{{ fighter.name }}</h2></div>
+</div>
+<div class="clear"></div>
+<div class="result">
+    <div class="one">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+        </ul>
+        <ul id="s_all">
+            {% for score in results %}
+                <li id="{{ score.id }}_all">{{ score.all }}</li>
+            {% endfor %}
+        </ul>
+        <ul id="s_sum">
+            {% for score in results %}
+                <li id="{{ score.id }}_sum">{{ score.sum }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="vtor">
+        <h1 id="r_supersum">{{ result.supersum }}</h1>
+        <h2>55.2</h2>
+        <div><p id="r_sum">{{ result.sum }}</p></div>
+        <div><p id="r_all">{{ result.all }}</p></div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<a href="/fight/{{ match.id }}/"><h1 style="font-size: 25px; text-align: center; margin: 0; width: 100%;">НАЗАД</h1></a>
+</body>
+<script>
+    $(document).ready(function () {
+
+        var webSocket = new WebSocket('wss://' + window.location.host + '/fight/{{ match.id }}/{{ fighter.id }}/');
+
+        webSocket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log(data);
+            if (data.mission === 'scores_update') {
+                $('#s_all').html('');
+                $(data.message.results).each(function (i,e) {
+                    $('#s_all').append('<li id="' + e.id + '_all">' + e.all + '</li>')
+                });
+                $('#s_sum').html('');
+                $(data.message.results).each(function (i,e) {
+                    $('#s_sum').append('<li id="' + e.id + '_sum">' + e.sum + '</li>')
+                });
+                $('#r_supersum').text(data.message.result.supersum);
+                $('#r_sum').text(data.message.result.sum);
+                $('#r_all').text(data.message.result.all);
+            }
+        };
+    });
+</script>
+</html>	

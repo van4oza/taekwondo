@@ -1,0 +1,136 @@
+/**************Index2************************/
+.strana-fl{
+	width: 50%;
+	float: left;
+}
+.strana-fl .flag{
+	width: 25%;
+	margin-left: 4%;
+}
+.name{
+	width: 45%;
+	height: 100px;
+	float: left;
+	border-left: 25px solid #fff;
+}
+.strana h2{
+	text-align: center;
+	color: #fff;
+}
+.one{
+	width: 45%;
+	padding-right: 5%;
+	float: left;
+	background-color: #04356C;
+}
+
+.vtor{
+	width: 50%;
+	height: 420px;
+	float: left;
+	position: relative;
+	background-color: #04356C;
+}
+.one ul:first-child{
+	width: 25%;
+}
+.one ul:first-child li{	
+	background-color: #689AD3;
+}
+.one ul:last-child li{	
+	background-color: #200772;
+}
+.one ul{
+	width: 35%;
+}
+
+.one ul li{
+	display: block;
+	width: 100%;
+	height: 61px;
+	background-color: #0D56A6;
+	font-size: 55px;
+	text-align: center;
+	border-radius: 7px;
+	border: 1px solid #fff;
+}
+
+.vtor div {
+	width: 42.5%;
+	height: 85px;
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	float: left;
+	border-radius: 7px;	
+	background-color: #200772;
+}
+.vtor div:last-child{	
+	background-color: #0D56A6;
+	margin-left: 47.5%;
+}
+.vtor div p{
+	font-size: 80px;
+	text-align: center;
+	color: #FFCF40;
+}
+.vtor h1{
+	font-size: 170px; 
+	color: #FFCF40;
+}
+.vtor h2{
+	text-align: right;
+	margin-right: 10%;
+	font-size: 100px;
+	color: #fff;
+}
+/********************index4*************************/
+
+table{
+	width: 100%;
+	height: 625px;
+	font-size: 75px;
+	text-align: center;
+	background-color: #000;
+	border-collapse: collapse;
+}
+tr{
+	width: 100%;
+	height: 125px;
+	margin: 0;
+	padding: 0;
+}
+tr td{	
+	padding-left: 1%;
+	border-radius: 7px;
+	border: 0.1px solid #04356C;
+}
+tr td:first-child{
+	width: 5%;
+	padding-right: 1.5%;
+	padding-left: 1.5%;
+	background-color: #689AD3;
+	text-align: center;
+	color: #000;
+}
+tr td:nth-child(3){
+	text-align: left;
+}
+tr td:last-child{
+	width: 20%;
+	color: #FFCF40;
+	font-weight: bold;
+	font-size: 90px;
+}
+.active td{
+	background-color: #FFCF40;
+	color: #000;
+}
+.active td:last-child{
+	color: #000;
+}
+.active td:first-child{	
+	background-color: #A60000;
+}

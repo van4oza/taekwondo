@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Логин</title>
+    <link href="{% static 'css/fight/style.css' %}" rel="stylesheet" media="all"/>
+    <link href="{% static 'css/fight/style-dop.css' %}" rel="stylesheet" media="all"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body style="display: table; width: 100%; height: 100vh; text-align: center">
+{#{% for e in errors %}#}
+{#    <p>{{ e }}</p>#}
+{#{% endfor %}#}
+{#<div style="display: inline-block; width: 32%; vertical-align: middle;"></div>#}
+{#<div style="display: inline-block; width: 100%; height: 100vh; vertical-align: middle;">#}
+<span style="display: table-cell; vertical-align: middle; margin: 0 auto; text-align: center">
+    {% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+        <br/>
+        <br/>
+    {% else %}
+    <p>Please login to see this page.</p>
+        <br/>
+        <br/>
+    {% endif %}
+{% endif %}
+    <form method="post" action="/fight/login/">
+{% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        <br/>
+        <br/>
+        <br/>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        <br/>
+        <br/>
+        <br/>
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="/fight/" />
+</form></span>
+{#</div>#}
+{#<div style="display: inline-block; width: 32%; vertical-align: middle;"></div>#}
+</body>
+</html>
