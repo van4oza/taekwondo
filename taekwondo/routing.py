@@ -3,7 +3,8 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from scoring.views import FightConsumer, FightConsumer2
 
 application = ProtocolTypeRouter({
-    URLRouter([
+    'websocket':
+        URLRouter([
             url('^/fight/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', FightConsumer),
             url('^/fight/(?P<match_id>\d+)/$', FightConsumer2),
         ])
