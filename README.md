@@ -18,12 +18,10 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-As superuser, create group `Judges` in admin panel:
+As superuser, **create group** `Judges` in admin panel:
 
 `/admin/auth/group/add/`
 
-Create users for Judges:
+**Create users** and **specify** that they're in `Judges` group:
 
 `/admin/auth/user/add/`
-
-Then add them to `Judges` group.
