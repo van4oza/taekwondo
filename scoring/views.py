@@ -644,7 +644,7 @@ class FightConsumer2(WebsocketConsumer):
         self.send({"text": json.dumps({"message": 'yo', "mission": 'hi'})})
 
     def disconnect(self, message):
-§        match_id = self.scope['url_route']['kwargs']['match_id']
+        match_id = self.scope['url_route']['kwargs']['match_id']
         channel_layer.group_discard('{}_boss'.format(match_id), self)
 
 
