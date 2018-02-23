@@ -1,25 +1,14 @@
-from django.shortcuts import render
 from decimal import Decimal
 from django.contrib.auth.models import Group
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from parse import parse
 from .pretty_print import pretty_search_or_print
-# from telegram_api.bot_api import TelegramBot
-# from telegram_api.models import Bot
 from .models import Score, Match, Fighter
-import json
-from django.http import HttpResponse
-from channels.handler import AsgiHandler, AsgiRequest
 from channels.channel import Group as chan_group
 import json
-# from blya.models import Blyach
 from django.contrib.auth.models import User
 from datetime import datetime
-
-# bot = Bot.objects.get(name='bliya_bot')
-
 from django.contrib.auth.decorators import user_passes_test
 
 
@@ -60,7 +49,7 @@ def new_scoring(request, match_id, fighter_id):
 def scoring(request, score_id):
     try:
         score = Score.objects.get(id=score_id)
-        return render(request, 'fight/ocenka.html', {'score': score, 'match': score.match})
+        return render(request, 'ocenka.html', {'score': score, 'match': score.match})
     except:
         return Http404
 
@@ -114,7 +103,7 @@ def match(request, match_id=None):
             matches = sorted(_matches, key=lambda k: k['score'], reverse=True)
             for i, m in enumerate(matches):
                 m['i'] = i + 1
-            return render(request, 'fight/new_match.html',
+            return render(request, 'new_match.html',
                           {'players': Fighter.objects.all(), 'judges': User.objects.filter(groups__name__contains='Judges'), 'match': match, 'matches': matches, 'all_matches': all_matches, 'errors': [], 'super': request.user.groups.filter(name='Superjudges').exists(), })
         else:
             match = Match.objects.create(date=datetime.now())
@@ -158,7 +147,7 @@ def match(request, match_id=None):
                     errors = ['NO SUCH FIGHTER', fighter, _fighter]
                     if len(matches) > 4:
                         pass
-                    return render(request, 'fight/new_match.html',
+                    return render(request, 'new_match.html',
                                   {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                    'errors': errors, 'judges': User.objects.filter(groups__name__contains='Judges'), 'super': request.user.groups.filter(name='Superjudges').exists()})
             except Exception as e:
@@ -176,7 +165,7 @@ def match(request, match_id=None):
                     m['i'] = i + 1
                 if len(matches) > 4:
                     pass
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': [pretty_search_or_print(e)], 'judges': User.objects.filter(groups__name__contains='Judges'), 'super': request.user.groups.filter(name='Superjudges').exists()})
         elif 'del_player' in request.POST:
@@ -235,7 +224,7 @@ def match(request, match_id=None):
                                 m['score']) + '</a></td></tr>'
                         chan_group('{}_boss'.format(match.id)).send(
                             {'text': json.dumps({'mission': 'active_tabel', 'message': imp, 'active_id': None})})
-                    return render(request, 'fight/new_match.html',
+                    return render(request, 'new_match.html',
                                   {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                    'errors': ['Участник {} успешно удалён!'.format(f_n)], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
                 else:
@@ -254,7 +243,7 @@ def match(request, match_id=None):
                     errors = ['NO SUCH FIGHTER', fighter, _fighter]
                     if len(matches) > 4:
                         pass
-                    return render(request, 'fight/new_match.html',
+                    return render(request, 'new_match.html',
                                   {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                    'errors': errors, 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
             except Exception as e:
@@ -272,7 +261,7 @@ def match(request, match_id=None):
                     m['i'] = i + 1
                 if len(matches) > 4:
                     pass
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': [pretty_search_or_print(e)], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
         elif 'del_judge' in request.POST:
@@ -296,7 +285,7 @@ def match(request, match_id=None):
                     errors = []
                 else:
                     errors = ['NO SUCH FIGHTER', judge, _judge]
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches,
                                'all_matches': all_matches, 'errors': errors, 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
             except Exception as e:
@@ -312,7 +301,7 @@ def match(request, match_id=None):
                 matches = sorted(_matches, key=lambda k: k['score'], reverse=True)
                 for i, m in enumerate(matches):
                     m['i'] = i + 1
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': [pretty_search_or_print(e)], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
         elif 'add_judge' in request.POST:
@@ -337,7 +326,7 @@ def match(request, match_id=None):
             matches = sorted(_matches, key=lambda k: k['score'], reverse=True)
             for i, m in enumerate(matches):
                 m['i'] = i + 1
-            return render(request, 'fight/new_match.html',
+            return render(request, 'new_match.html',
                           {'players': Fighter.objects.all(), 'match': match, 'matches': matches,
                            'all_matches': all_matches,
                            'errors': er, 'judges': User.objects.filter(groups__name__contains='Judges'), 'super': request.user.groups.filter(name='Superjudges').exists()})
@@ -411,7 +400,7 @@ def match(request, match_id=None):
             matches = sorted(_matches, key=lambda k: k['score'], reverse=True)
             for i, m in enumerate(matches):
                 m['i'] = i + 1
-            return render(request, 'fight/new_match.html',
+            return render(request, 'new_match.html',
                           {'players': Fighter.objects.all(), 'match': match, 'matches': matches,
                            'all_matches': all_matches,
                            'errors': er, 'judges': User.objects.filter(groups__name__contains='Judges'), 'super': request.user.groups.filter(name='Superjudges').exists()})
@@ -448,7 +437,7 @@ def match(request, match_id=None):
                 for i, m in enumerate(matches):
                     m['i'] = i + 1
                 errors = []
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches,
                                'all_matches': all_matches, 'errors': errors, 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
             except Exception as e:
@@ -465,7 +454,7 @@ def match(request, match_id=None):
                 matches = sorted(_matches, key=lambda k: k['score'], reverse=True)
                 for i, m in enumerate(matches):
                     m['i'] = i + 1
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': errors, 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
         elif 'new_match' in request.POST:
@@ -491,7 +480,7 @@ def match(request, match_id=None):
                     m['i'] = i + 1
                 if len(matches) > 4:
                     pass
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': ['Участник {} успешно добавлен!'.format(str(fighter))], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
             except Exception as e:
@@ -509,7 +498,7 @@ def match(request, match_id=None):
                     m['i'] = i + 1
                 if len(matches) > 4:
                     pass
-                return render(request, 'fight/new_match.html',
+                return render(request, 'new_match.html',
                               {'players': Fighter.objects.all(), 'match': match, 'matches': matches, 'all_matches': all_matches,
                                'errors': [pretty_search_or_print(e)], 'super': request.user.groups.filter(name='Superjudges').exists(), 'judges': User.objects.filter(groups__name__contains='Judges')})
 
@@ -533,7 +522,7 @@ def top(request, match_id):
         m['i'] = i + 1
     if len(matches) > 4:
         pass
-    return render(request, 'fight/top.html', {'matches': matches, 'errors': [], 'match': match})
+    return render(request, 'top.html', {'matches': matches, 'errors': [], 'match': match})
 
 
 def results(request, match_id, player_id):
@@ -541,7 +530,7 @@ def results(request, match_id, player_id):
         match = Match.objects.get(id=match_id)
         player = Fighter.objects.get(id=player_id)
         scores = Score.objects.filter(match=match, fighter=player)
-        return render(request, 'fight/results.html',
+        return render(request, 'results.html',
                       {'results': scores, 'fighter': player, 'result': match.result(player), 'match': match})
     except:
         return Http404
@@ -654,13 +643,13 @@ def ws_disconnect_boss(message, match_id):
 
 def new_fighter(request):
     if request.method == 'GET':
-        return render(request, 'fight/new_fighter.html', {'res': None, 'err': None})
+        return render(request, 'new_fighter.html', {'res': None, 'err': None})
     elif request.method == 'POST':
         try:
             fighter = Fighter.objects.create(name=request.POST['name'], tech=request.POST['tech'],
                                              country=request.POST['country'], gender=request.POST['gender'], birthday=request.POST['bday'])
             fighter.save()
-            return render(request, 'fight/new_fighter.html', {'res': fighter, 'err': None})
+            return render(request, 'new_fighter.html', {'res': fighter, 'err': None})
         except Exception as e:
-            return render(request, 'fight/new_fighter.html', {'res': None, 'err': e})
+            return render(request, 'new_fighter.html', {'res': None, 'err': e})
 

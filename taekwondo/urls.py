@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from scoring.views import match, new_fighter, last_match, top, results, scoring, new_scoring, command
 
 urlpatterns = [
@@ -32,6 +33,9 @@ urlpatterns = [
     url(r'^fight/score/(?P<score_id>\d+)/$', scoring),
     url(r'^fight/new_score/(?P<match_id>\d+)/(?P<fighter_id>\d+)/$', new_scoring),
     url(r'^fight/score/(?P<score_id>\d+)/(?P<param>[a-zA-Z0-9_.]+)$', command),
+
+    url('fight/login/', auth_views.LoginView.as_view(template_name='login.html')),
+    url('fight/logout/', auth_views.LogoutView.as_view(template_name='logout.html')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
