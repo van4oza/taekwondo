@@ -1,6 +1,6 @@
-# Taekwondo  scoring web-app
+# Taekwondo scoring
 
-
+Django channels web-app
 
 ## Prequirements:
 
