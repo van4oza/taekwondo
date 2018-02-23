@@ -1,6 +1,8 @@
 # taekwondo
 taekwondo scoring web-app
 
+
+
 Prequirements:
 
 python3.6
@@ -8,7 +10,8 @@ python3.6
 redis
 
 
-Installation
+
+Installation:
 
 
 pip install -r requirements.txt
