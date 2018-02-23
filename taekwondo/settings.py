@@ -25,7 +25,7 @@ SECRET_KEY = '=osi-(+70_ja($n4o5zt7rz)87moxyc2hk%h%5aha))m-^dnc*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
